@@ -10,6 +10,7 @@ import { StreamShow } from "./pages/StreamShow";
 import { Header } from "./shared/Header";
 import "semantic-ui-css/semantic.min.css";
 import Login from "./pages/Login";
+import { QR } from "./pages/QR";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Header />
         <div>
           <Route path="/" exact component={StreamList} />
+          <Route path="/qr" exact component={QR} />
           <Route path="/streams/new" exact component={StreamCreate} />
           <Route path="/streams/edit" exact component={StreamEdit} />
           <Route path="/streams/delete" exact component={StreamDelete} />

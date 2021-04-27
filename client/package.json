@@ -10,6 +10,8 @@
     "@types/node": "^12.20.10",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
+    "paynowqr": "^1.1.2",
+    "qrcode.react": "^1.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.4",
