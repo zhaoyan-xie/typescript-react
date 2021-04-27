@@ -9,6 +9,8 @@ import { StreamList } from "./pages/StreamList";
 import { StreamShow } from "./pages/StreamShow";
 import { Header } from "./shared/Header";
 import "semantic-ui-css/semantic.min.css";
+import Login from "./pages/Login";
+
 function App() {
   return (
     <Container>
@@ -20,6 +22,7 @@ function App() {
           <Route path="/streams/edit" exact component={StreamEdit} />
           <Route path="/streams/delete" exact component={StreamDelete} />
           <Route path="/streams/show" exact component={StreamShow} />
+          <Route path="/login" exact component={Login} />
         </div>
       </BrowserRouter>
     </Container>
