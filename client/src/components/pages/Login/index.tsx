@@ -1,8 +1,8 @@
 import { useCallback } from "react";
-import { connect, ConnectedProps, useDispatch } from "react-redux";
+import { connect, ConnectedProps, useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Button } from "semantic-ui-react";
-import { RootState } from "../../../redux/reducers";
+// import { RootState } from "../../../redux/reducers";
 import { authenticationSelectors, login, logout } from "./store";
 
 type ReduxProps = ConnectedProps<typeof connector>;
@@ -15,21 +15,18 @@ export const Login = (props: Props) => {
   const dispatch = useDispatch();
   const userLogout = useCallback(() => dispatch(logout()), [dispatch]);
   const userLogin = useCallback(() => dispatch(login()), [dispatch]);
-  const { authentication } = props;
+  const auth = useSelector(authenticationSelectors.getAuthState);
 
-  return authentication.isLoggedIn ? (
+  return auth.isLoggedIn ? (
     <Button onClick={userLogout}>Logout</Button>
   ) : (
     <Button onClick={userLogin}>Please login</Button>
   );
 };
 
-const mapStateToProps = (state: RootState) => {
-  return { authentication: authenticationSelectors.getAuthState(state) };
-};
 const mapDispatchToProps = {
   login,
   logout,
 };
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(null, mapDispatchToProps);
 export default connector(Login);
