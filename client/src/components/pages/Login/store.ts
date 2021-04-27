@@ -2,10 +2,12 @@ import { Action, Reducer } from "redux";
 import { RootState } from "../../../redux/reducers";
 
 export interface AuthenticationState {
+	userId: string;
 	isLoggedIn: boolean;
 }
 
 const INITIAL_STATE: AuthenticationState = {
+	userId: "",
 	isLoggedIn: false,
 }
 
@@ -14,12 +16,15 @@ export enum AuthenticationActionTypes {
 	LOG_OUT = "login/logout"
 }
 
-interface LoginAction extends Action<AuthenticationActionTypes.LOG_IN> { }
+interface LoginAction extends Action<AuthenticationActionTypes.LOG_IN> {
+	payload: { userId: string },
+}
 interface LogoutAction extends Action<AuthenticationActionTypes.LOG_OUT> { }
 
-export const login = (): LoginAction => {
+export const login = (userId: string): LoginAction => {
 	return {
 		type: AuthenticationActionTypes.LOG_IN,
+		payload: { userId },
 	}
 }
 export const logout = (): LogoutAction => {
@@ -33,8 +38,7 @@ type AuthenticationActions = LoginAction | LogoutAction;
 export const AuthenticationReducer: Reducer<AuthenticationState, AuthenticationActions> =
 	(state = INITIAL_STATE, action) => {
 		if (action.type === AuthenticationActionTypes.LOG_IN) {
-
-			return { ...state, isLoggedIn: true }
+			return { ...state, isLoggedIn: true, userId: action.payload.userId }
 		}
 		if (action.type === AuthenticationActionTypes.LOG_OUT) {
 			return { ...state, isLoggedIn: false }

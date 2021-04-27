@@ -1,26 +1,33 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { connect, ConnectedProps, useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { Button } from "semantic-ui-react";
+import { Button, Container, Input } from "semantic-ui-react";
 // import { RootState } from "../../../redux/reducers";
 import { authenticationSelectors, login, logout } from "./store";
 
 type ReduxProps = ConnectedProps<typeof connector>;
+
+// TODO: to understand
 interface MatchParams {
   name: string;
 }
 type Props = RouteComponentProps<MatchParams> & ReduxProps;
 
 export const Login = (props: Props) => {
+  const [userInput, setUserInput] = useState("");
+
   const dispatch = useDispatch();
   const userLogout = useCallback(() => dispatch(logout()), [dispatch]);
-  const userLogin = useCallback(() => dispatch(login()), [dispatch]);
+  const userLogin = useCallback(() => dispatch(login(userInput)), [dispatch, userInput]);
   const auth = useSelector(authenticationSelectors.getAuthState);
 
   return auth.isLoggedIn ? (
     <Button onClick={userLogout}>Logout</Button>
   ) : (
-    <Button onClick={userLogin}>Please login</Button>
+    <Container>
+      <Button onClick={userLogin}>Please login</Button>
+      <Input value={userInput} onChange={(e) => setUserInput(e.target.value)} />
+    </Container>
   );
 };
 
