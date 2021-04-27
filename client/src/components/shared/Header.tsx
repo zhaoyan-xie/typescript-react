@@ -5,12 +5,14 @@ import { Menu, MenuItemProps } from "semantic-ui-react";
 enum MenuName {
   Home = "home",
   Streams = "streams",
+  NewStream = "new stream",
   Login = "login",
   QR = "qr",
 }
 const menuItems: MenuItemProps[] = [
   { pathName: "/", name: MenuName.Home },
   { pathName: "/streams", name: MenuName.Streams },
+  { pathName: "/streams/new", name: MenuName.NewStream },
   { pathName: "/qr", name: MenuName.QR },
   { pathName: "/login", name: MenuName.Login, position: "right" },
 ];

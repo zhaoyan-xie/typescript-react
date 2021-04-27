@@ -1,6 +1,9 @@
 import { Action, Reducer } from "redux";
 import { RootState } from "../../../redux/reducers";
 
+// =============================================================================
+// State
+// =============================================================================
 export interface AuthenticationState {
 	userId: string;
 	isLoggedIn: boolean;
@@ -11,6 +14,9 @@ const INITIAL_STATE: AuthenticationState = {
 	isLoggedIn: false,
 }
 
+// =============================================================================
+// Actions
+// =============================================================================
 export enum AuthenticationActionTypes {
 	LOG_IN = "auth/login",
 	LOG_OUT = "login/logout"
@@ -35,6 +41,9 @@ export const logout = (): LogoutAction => {
 
 type AuthenticationActions = LoginAction | LogoutAction;
 
+// =============================================================================
+// Reducer
+// =============================================================================
 export const AuthenticationReducer: Reducer<AuthenticationState, AuthenticationActions> =
 	(state = INITIAL_STATE, action) => {
 		if (action.type === AuthenticationActionTypes.LOG_IN) {
@@ -46,6 +55,9 @@ export const AuthenticationReducer: Reducer<AuthenticationState, AuthenticationA
 		return { ...state }
 	}
 
+// =============================================================================
+// Selectors
+// =============================================================================
 const getAuthState = (state: RootState): AuthenticationState => state.authentication
 
 export const authenticationSelectors = {
