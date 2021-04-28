@@ -1,17 +1,14 @@
 import { useCallback, useState } from "react";
-import { connect, ConnectedProps, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Button, Container, Input } from "semantic-ui-react";
-// import { RootState } from "../../../redux/reducers";
 import { authenticationSelectors, login, logout } from "./store";
-
-type ReduxProps = ConnectedProps<typeof connector>;
 
 // TODO: to understand
 interface MatchParams {
   name: string;
 }
-type Props = RouteComponentProps<MatchParams> & ReduxProps;
+type Props = RouteComponentProps<MatchParams>;
 
 export const Login = (props: Props) => {
   const [userInput, setUserInput] = useState("");
@@ -31,9 +28,4 @@ export const Login = (props: Props) => {
   );
 };
 
-const mapDispatchToProps = {
-  login,
-  logout,
-};
-const connector = connect(null, mapDispatchToProps);
-export default connector(Login);
+export default Login;
