@@ -19,7 +19,7 @@ const INITIAL_STATE: AuthenticationState = {
 // =============================================================================
 export enum AuthenticationActionTypes {
 	LOG_IN = "auth/login",
-	LOG_OUT = "login/logout"
+	LOG_OUT = "auth/logout"
 }
 
 interface LoginAction extends Action<AuthenticationActionTypes.LOG_IN> {

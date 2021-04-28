@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { createStore, compose, applyMiddleware } from "redux";
-import reduxThunk from "redux-thunk";
+import thunk from "redux-thunk";
 import App from "./components/App";
 import reducers from "./redux/reducers";
 import reportWebVitals from "./reportWebVitals";
@@ -14,7 +14,8 @@ declare global {
 }
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(reducers, composeEnhancers(applyMiddleware(reduxThunk)));
+const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
+// const store = createStore(reducers, applyMiddleware(thunk));
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

@@ -1,4 +1,4 @@
-import { connect, ConnectedProps } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Field, InjectedFormProps, reduxForm, WrappedFieldProps } from "redux-form";
 import { Button, Form, Label } from "semantic-ui-react";
 import { createStream } from "./store";
@@ -6,13 +6,14 @@ import { createStream } from "./store";
 interface P {
   label: string;
 }
-type ReduxProps = ConnectedProps<typeof connector>;
 export interface StreamFormData extends FormData {
   title: string;
   description: string;
 }
 
-export const StreamCreate = (props: InjectedFormProps<StreamFormData> & ReduxProps) => {
+export const StreamCreate = (props: InjectedFormProps<StreamFormData>) => {
+  const dispatch = useDispatch();
+
   const renderInput = (formProps: WrappedFieldProps & P) => {
     return (
       <div>
@@ -22,7 +23,7 @@ export const StreamCreate = (props: InjectedFormProps<StreamFormData> & ReduxPro
     );
   };
   const onSubmit = (formValues: StreamFormData) => {
-    props.createStream(formValues);
+    dispatch(createStream(formValues));
   };
 
   return (
@@ -36,7 +37,4 @@ export const StreamCreate = (props: InjectedFormProps<StreamFormData> & ReduxPro
   );
 };
 
-const connector = connect(null, { createStream });
-const connectedForm = connector(StreamCreate);
-
-export default reduxForm<StreamFormData>({ form: "streamCreate" })(connectedForm);
+export default reduxForm<StreamFormData>({ form: "streamCreate" })(StreamCreate);
