@@ -12,12 +12,12 @@ interface CreateStreamResponseData {
 interface Stream {
   [id: number]: CreateStreamResponseData;
 }
-export interface StreamCreateState {
+export interface StreamState {
   stream: Stream;
   allStreams: Stream;
 }
 
-const INITIAL_STATE: StreamCreateState = {
+const INITIAL_STATE: StreamState = {
   stream: {},
   allStreams: {},
 };
@@ -90,7 +90,7 @@ export const fetchStream = (id: number): ThunkAction<Promise<void>, RootState, v
 // ===========================================================================
 // Reducer
 // ===========================================================================
-export const StreamCreateReducer: Reducer<StreamCreateState, StreamCreateActions> = (state = INITIAL_STATE, action) => {
+export const StreamCreateReducer: Reducer<StreamState, StreamCreateActions> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case StreamCreateActionTypes.POST_STREAM:
     case StreamCreateActionTypes.FETCH_STREAM:
@@ -104,4 +104,13 @@ export const StreamCreateReducer: Reducer<StreamCreateState, StreamCreateActions
     default:
       return { ...state };
   }
+};
+
+// ===========================================================================
+// Selectors
+// ===========================================================================
+const getAllStreams = (state: RootState) => state.stream.allStreams;
+
+export const streamSelector = {
+  getAllStreams,
 };
