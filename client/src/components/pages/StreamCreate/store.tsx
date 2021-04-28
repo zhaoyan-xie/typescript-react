@@ -4,12 +4,17 @@ import { StreamFormData } from ".";
 import streams from "../../../api/streams";
 import { RootState } from "../../../redux/reducers";
 
+export interface CreateStreamResponseData {
+  id: number;
+  title: string;
+  description: string;
+}
 export interface StreamCreateState {
-  payload: {};
+  payload: CreateStreamResponseData;
 }
 
 const INITIAL_STATE: StreamCreateState = {
-  payload: {},
+  payload: { id: -1, title: "", description: "" },
 };
 // =============================================================================
 // Actions
@@ -19,13 +24,13 @@ enum StreamCreateActionTypes {
 }
 
 interface PostStreamAction extends Action<StreamCreateActionTypes.POST_STREAM> {
-  payload: StreamFormData;
+  payload: CreateStreamResponseData;
 }
 
-export const postStream = (formValues: StreamFormData): PostStreamAction => {
+export const postStream = (resData: CreateStreamResponseData): PostStreamAction => {
   return {
     type: StreamCreateActionTypes.POST_STREAM,
-    payload: formValues,
+    payload: resData,
   };
 };
 
@@ -33,17 +38,18 @@ type StreamCreateActions = PostStreamAction;
 // =============================================================================
 // Thunk Dispatcher
 // =============================================================================
+
 export const createStream = (
   formValues: StreamFormData
 ): ThunkAction<Promise<void>, RootState, void, StreamCreateActions> => async (dispatch) => {
-  dispatch(postStream(formValues));
+  const response = await streams.post<CreateStreamResponseData>("/streams", formValues);
+  dispatch(postStream(response.data));
 };
 // ===========================================================================
 // Reducer
 // ===========================================================================
 export const StreamCreateReducer: Reducer<StreamCreateState, StreamCreateActions> = (state = INITIAL_STATE, action) => {
   if (action.type === StreamCreateActionTypes.POST_STREAM) {
-    streams.post("/streams", action.payload);
     return { ...state, payload: action.payload };
   }
   return { ...state };
