@@ -4,19 +4,22 @@ import { StreamFormData } from "./StreamCreate";
 import streams from "../../../api/streams";
 import { RootState } from "../../../redux/reducers";
 
-export interface CreateStreamResponseData {
+interface CreateStreamResponseData {
   id: number;
   title: string;
   description: string;
 }
+interface Stream {
+  [id: number]: CreateStreamResponseData;
+}
 export interface StreamCreateState {
-  payload: CreateStreamResponseData;
-  allStreams: CreateStreamResponseData[];
+  stream: Stream;
+  allStreams: Stream;
 }
 
 const INITIAL_STATE: StreamCreateState = {
-  payload: { id: -1, title: "", description: "" },
-  allStreams: [],
+  stream: {},
+  allStreams: {},
 };
 // =============================================================================
 // Actions
@@ -35,6 +38,9 @@ interface PostStreamAction extends Action<StreamCreateActionTypes.POST_STREAM> {
 interface FetchStreamsAction extends Action<StreamCreateActionTypes.FETCH_STREAMS> {
   payload: CreateStreamResponseData[];
 }
+interface FetchStreamAction extends Action<StreamCreateActionTypes.FETCH_STREAM> {
+  payload: CreateStreamResponseData;
+}
 
 const postStream = (resData: CreateStreamResponseData): PostStreamAction => {
   return {
@@ -49,7 +55,14 @@ const saveStreams = (resData: CreateStreamResponseData[]): FetchStreamsAction =>
     payload: resData,
   };
 };
-type StreamCreateActions = PostStreamAction | FetchStreamsAction;
+
+const saveStream = (resData: CreateStreamResponseData): FetchStreamAction => {
+  return {
+    type: StreamCreateActionTypes.FETCH_STREAM,
+    payload: resData,
+  };
+};
+type StreamCreateActions = PostStreamAction | FetchStreamsAction | FetchStreamAction;
 // =============================================================================
 // Thunk Dispatcher
 // =============================================================================
@@ -65,18 +78,30 @@ export const fetchStreams = (): ThunkAction<Promise<void>, RootState, void, Stre
   dispatch
 ) => {
   const response = await streams.get<CreateStreamResponseData[]>("/streams");
-  console.log(">>>>", response);
   dispatch(saveStreams(response.data));
+};
+
+export const fetchStream = (id: number): ThunkAction<Promise<void>, RootState, void, StreamCreateActions> => async (
+  dispatch
+) => {
+  const response = await streams.get<CreateStreamResponseData>(`/streams/${id}`);
+  dispatch(saveStream(response.data));
 };
 // ===========================================================================
 // Reducer
 // ===========================================================================
 export const StreamCreateReducer: Reducer<StreamCreateState, StreamCreateActions> = (state = INITIAL_STATE, action) => {
-  if (action.type === StreamCreateActionTypes.POST_STREAM) {
-    return { ...state, payload: action.payload };
+  switch (action.type) {
+    case StreamCreateActionTypes.POST_STREAM:
+    case StreamCreateActionTypes.FETCH_STREAM:
+      return { ...state, stream: { [action.payload.id]: action.payload } };
+    case StreamCreateActionTypes.FETCH_STREAMS:
+      const allStreams: Stream = {};
+      for (let stream of action.payload) {
+        allStreams[stream.id] = stream;
+      }
+      return { ...state, allStreams };
+    default:
+      return { ...state };
   }
-  if (action.type === StreamCreateActionTypes.FETCH_STREAMS) {
-    return { ...state, allStreams: action.payload };
-  }
-  return { ...state };
 };
