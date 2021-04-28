@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { Field, InjectedFormProps, reduxForm, WrappedFieldProps } from "redux-form";
 import { Button, Form, Label } from "semantic-ui-react";
-import { createStream } from "./store";
+import { createStream } from "../store";
 
 interface P {
   label: string;

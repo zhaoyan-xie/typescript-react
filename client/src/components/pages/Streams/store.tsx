@@ -1,6 +1,6 @@
 import { Action, Reducer } from "redux";
 import { ThunkAction } from "redux-thunk";
-import { StreamFormData } from ".";
+import { StreamFormData } from "./StreamCreate";
 import streams from "../../../api/streams";
 import { RootState } from "../../../redux/reducers";
 
@@ -20,7 +20,11 @@ const INITIAL_STATE: StreamCreateState = {
 // Actions
 // =============================================================================
 enum StreamCreateActionTypes {
-  POST_STREAM = "stream/post",
+  POST_STREAM = "stream/post-one",
+  FETCH_STREAM = "stream/fetch-one",
+  FETCH_STREAMS = "stream/fetch-all",
+  DELETE_STREAM = "stream/delete",
+  EDIT_STREAM = "stream/edit",
 }
 
 interface PostStreamAction extends Action<StreamCreateActionTypes.POST_STREAM> {
