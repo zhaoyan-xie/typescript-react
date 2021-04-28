@@ -1,7 +1,8 @@
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Field, InjectedFormProps, reduxForm, WrappedFieldProps } from "redux-form";
 import { Button, Form, Label } from "semantic-ui-react";
-import { createStream } from "../store";
+import { createStream, fetchStreams } from "../store";
 
 interface P {
   label: string;
@@ -13,6 +14,10 @@ export interface StreamFormData extends FormData {
 
 export const StreamCreate = (props: InjectedFormProps<StreamFormData>) => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchStreams());
+  });
 
   const renderInput = (formProps: WrappedFieldProps & P) => {
     return (

@@ -1,7 +1,8 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Button, Container, Input } from "semantic-ui-react";
+import { fetchStreams } from "../Streams/store";
 import { authenticationSelectors, login, logout } from "./store";
 
 // TODO: to understand
@@ -12,7 +13,6 @@ type Props = RouteComponentProps<MatchParams>;
 
 export const Login = (props: Props) => {
   const [userInput, setUserInput] = useState("");
-
   const dispatch = useDispatch();
   const userLogout = useCallback(() => dispatch(logout()), [dispatch]);
   const userLogin = useCallback(() => dispatch(login(userInput)), [dispatch, userInput]);
